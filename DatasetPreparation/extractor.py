@@ -5,9 +5,12 @@ import numpy as np
 import mediapipe as mp
 from scipy.spatial import distance as dist
 from PIL import Image
+import cv2
+import math
+import csv
 # from torchvision import transforms
 # import torch
-from emonet.models import EmoNet
+import csv
 
 def get_mediapipe_app(
     max_num_faces=1,
@@ -295,11 +298,9 @@ class FeatureExtractor():
         lip_distance_list = self._calculate_lip_distance(facial_landmark_list)
         face_pose_list = self._calculate_face_pose_batch(facial_landmark_list)
         iris_in_out_list = self._calculate_iris(right_irises_list, left_irises_list)
-        
         results = []
-        for i in range(self.num_frames):
+        for i in range(len(frames)):
             result = {'video_name' : video_name , 'chunk_index': chunk_index, 'frame': i, 'ear': avg_ear_list[i], 'lip_distance': lip_distance_list[i], 'face_pose': face_pose_list[i], 'iris_pose': iris_in_out_list[i]}
             results.append(result)
 
         return results
-    
