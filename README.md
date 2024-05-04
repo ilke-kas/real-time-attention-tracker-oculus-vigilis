@@ -2,10 +2,6 @@
 
 “Oculus Vigilis” aims  to help people to overcome their self-perceived attention problems such as ADHD or hyperactivity by giving a real-time feedback of the attention levels of one user using their camera records, especially during online meetings and learning processes.
 
-
-Initially appeared on
-[gist](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2). But the page cannot open anymore so that is why I have moved it here.
-
 ## Getting Started
 
 These instructions will give you a copy of the project up and running on
