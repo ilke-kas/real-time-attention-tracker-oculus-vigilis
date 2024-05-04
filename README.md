@@ -45,11 +45,15 @@ A step by step series of creating necessary environments to run the attention mo
 7. Open Jupyter Notebook
 
         jupyter notebook
-8. Go to the directory that the github files you cloned through jupyter notebook UI.
+   
+9. Go to the directory that the github files you cloned through jupyter notebook UI.
 
-9. Go to DatasetPreperation file and open Attention_Model.ipynb
+10. Go to DatasetPreperation file and open Attention_Model.ipynb
 
-10. 
+11. When you run the first line of the code
+
+            !nvidia-sim
+    Be sure that
 
 
 End with an example of getting some data out of the system or using it
