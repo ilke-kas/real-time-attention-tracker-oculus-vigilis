@@ -11,18 +11,17 @@ for notes on deploying the project on a live system.
 ### Prerequisites
 
 Requirements for the software and other tools to build, test and push 
-- At least [Python 3.11.8](https://www.python.org/downloads/release/python-3118/)
 - For model training [Anaconda](https://jupyter.org/) or [Google Colab](https://colab.research.google.com/)
-- High Performance GPUs like A100  
+- High Performance GPUs like A100, NVIDIA GE3600 
 
 ## Attention Model
 ### Installing
-
+After clonning this repository follow these steps:
 A step by step series of creating necessary environments to run the attention model.
 1. Open Anaconda Prompt
 2. Create a virtual environment
 
-        conda create -n attention_env
+        conda create --name attention_env -c anaconda python=3.11.0
 
 3. Activate the environment
 
@@ -30,7 +29,28 @@ A step by step series of creating necessary environments to run the attention mo
 4. Install Jupyter Notebook
 
         conda install jupyter
-5.
+
+5. Install these modules
+
+        conda install pandas
+        conda install matplotlib
+        conda install pytorch
+        conda install torchvision
+        conda install scikit-learn
+        conda install torchmetrics
+        conda install tqdm
+        conda install seaborn
+        conda install pytorch-lightning   
+        
+7. Open Jupyter Notebook
+
+        jupyter notebook
+8. Go to the directory that the github files you cloned through jupyter notebook UI.
+
+9. Go to DatasetPreperation file and open Attention_Model.ipynb
+
+10. 
+
 
 End with an example of getting some data out of the system or using it
 for a little demo
