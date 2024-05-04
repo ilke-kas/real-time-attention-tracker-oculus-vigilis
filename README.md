@@ -32,7 +32,9 @@ A step by step series of creating necessary environments to run the attention mo
 
 5. Install these modules
 
-        conda install pandas matplotlib pytorch torchvision scikit-learn torchmetrics tqdm seaborn pytorch-lightning tensorboard
+        conda install tensorflow-gpu
+        conda install pytorch torchvision torchaudio cudatoolkit -c pytorch
+        conda pandas matplotlib scikit-learn torchmetrics tqdm seaborn pytorch-lightning tensorboard
         
 7. Open Jupyter Notebook
 
