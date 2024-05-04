@@ -2,17 +2,24 @@ import tkinter as tk
 import cv2
 from PIL import Image, ImageTk
 import math
-import csv
 import pandas as pd
 import torch
 import torch.nn as nn
 from tqdm import tqdm
 import sys
+import pytorch_lightning as pl
+from torchmetrics import Accuracy
+import torch.optim as optim
+import matplotlib.pyplot as plt
+import pdfkit
+import logging
+import torch
 import threading
 sys.path.append('./DatasetPreparation/')
 from extractor import FeatureExtractor
-
 from torch.utils.data import Dataset, DataLoader
+stopped=False
+
 class AttentionDataset(Dataset):
   def __init__(self,sequences):
     self.sequences = sequences
@@ -44,11 +51,6 @@ class AttentionModel(nn.Module):
 
     out = hidden[-1]
     return self.classifier(out)
-  
-import pytorch_lightning as pl
-from torchmetrics import Accuracy
-import torch.optim as optim
-import torch
 
 # Check if GPU is available, otherwise use CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -116,64 +118,67 @@ class VideoThread(threading.Thread):
         self.window = window
         self.video_label = video_label
         self.average_label = average_label 
+        self._stop_event = threading.Event()
 
     def run(self):
-        feature_extractor = FeatureExtractor()
-        self.cap = cv2.VideoCapture(0)  
-        frames = [] 
-        chunk_index = 0
-        # Read until video is completed
-        while self.cap.isOpened():
-            ret, frame = self.cap.read()
-            if ret:
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                frame = cv2.resize(frame, (700, 700))
-                image = Image.fromarray(frame)
-                photo = ImageTk.PhotoImage(image=image)
+            feature_extractor = FeatureExtractor()
+            self.cap = cv2.VideoCapture(0)  
+            frames = [] 
+            chunk_index = 0
+            # Read until video is completed
+            while self.cap.isOpened():
+                ret, frame = self.cap.read()
+                if ret and frame is not None:
+                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    frame = cv2.resize(frame, (700, 700))
+                    image = Image.fromarray(frame)
+                    photo = ImageTk.PhotoImage(image=image)
 
-                self.video_label.config(image=photo)
-                self.video_label.image = photo
+                    self.video_label.config(image=photo)
+                    self.video_label.image = photo
 
-                #send  it to the feature extractor
-                frames.append(frame)
-                if len(frames) >= 100:
-                    while chunk_index < math.floor(len(frames)/100):
-                        chunk_frames = frames[chunk_index*100:(chunk_index+1)*100]
-                        features = feature_extractor.extract_features(chunk_frames, '1_1', chunk_index)
-                        df = pd.DataFrame(features)
-                        FEATURE_COLUMNS = ['ear', 'lip_distance', 'face_pose', 'iris_pose']
-                        sequences = []
-                        for index, group in  df.groupby(['video_name','chunk_index']):
-                            sequence_features = group[FEATURE_COLUMNS]
-                            sequences.append(sequence_features)
-                        test_dataset = AttentionDataset(sequences)
-                        for item in tqdm(test_dataset):
-                            sequence = item["sequence"]
-                            _,output = model(sequence.unsqueeze(dim=0).to(device))
+                    #send  it to the feature extractor
+                    frames.append(frame)
+                    if len(frames) >= 100:
+                        while chunk_index < math.floor(len(frames)/100):
+                            chunk_frames = frames[chunk_index*100:(chunk_index+1)*100]
+                            features = feature_extractor.extract_features(chunk_frames, '1_1', chunk_index)
+                            df = pd.DataFrame(features)
+                            FEATURE_COLUMNS = ['ear', 'lip_distance', 'face_pose', 'iris_pose']
+                            sequences = []
+                            for index, group in  df.groupby(['video_name','chunk_index']):
+                                sequence_features = group[FEATURE_COLUMNS]
+                                sequences.append(sequence_features)
+                            test_dataset = AttentionDataset(sequences)
+                            for item in tqdm(test_dataset):
+                                sequence = item["sequence"]
+                                _,output = model(sequence.unsqueeze(dim=0).to(device))
 
-                            prediction = torch.argmax(output,dim=1)
-                            print("Current attention prediction is " + str(prediction))
-                            all_predictions.append(prediction.item()+1)
-                        # Take the last 3 elements if the array has more than 3 elements, otherwise take all elements
-                        last_three = all_predictions[-3:] if len(all_predictions) >= 3 else all_predictions
+                                prediction = torch.argmax(output,dim=1)
+                                print("Current attention prediction is " + str(prediction))
+                                all_predictions.append(prediction.item()+1)
+                            # Take the last 3 elements if the array has more than 3 elements, otherwise take all elements
+                            last_three = all_predictions[-3:] if len(all_predictions) >= 3 else all_predictions
 
-                        if last_three:
-                            average = sum(last_three) / len(last_three)
-                        else:
-                            average = 0  # Or any other default value you prefer if the array is empty
+                            if last_three:
+                                average = sum(last_three) / len(last_three)
+                            else:
+                                average = 0  # Or any other default value you prefer if the array is empty
 
-                        print("Average of last three elements:", average)
-                         # Update the average label text with the calculated average score
-                        self.average_label.config(text="Average Score: {:.2f}".format(average))
+                            print("Average of last three elements:", average)
+                            # Update the average label text with the calculated average score
+                            self.average_label.config(text="Average Score: {:.2f} /3.00".format(average))
 
-                        chunk_index=chunk_index+1
+                            chunk_index=chunk_index+1
 
-            else: 
-                break
-
+                else: 
+                    break
+            self.cap.release()
     def stop(self):
+        stopped =True
         if self.cap.isOpened():
             self.cap.release()
+        self._stop_event.set()
          # Set the event to signal thread termination
 
 def start_clicked(window, button_start, video_thread,average_label):
@@ -190,13 +195,31 @@ def start_clicked(window, button_start, video_thread,average_label):
     button_stop.place(relx=0.5, rely=0.6, anchor='center')  
     button_stop.config(width=10, height=3)
     button_stop.pack()
+# After the while loop where you calculate the average attention level
+# Define a function to plot time vs attention level
+def plot_attention_over_time():
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(len(all_predictions)), all_predictions, marker='o', linestyle='-')
+    plt.title('Time vs Attention Level')
+    plt.xlabel('Time')
+    plt.ylabel('Attention Level')
+    plt.grid(True)
+    plt.tight_layout()
 
 def stop_clicked(window, button_start, button_stop, video_thread):
-    button_stop.pack_forget()
+    # After calculating the average attention level
+    # Call the function to plot time vs attention level
+    plot_attention_over_time()
+    # Save the plot as a PDF
+    plt.savefig('attention_over_time.pdf')
+    # Close the plot
+    plt.close()
+    video_thread.join(5)
     video_thread.stop()
-    window.destroy()
-    main_window()
-    all_predictions = []
+    button_stop.pack_forget()
+  
+    #window.destroy()
+    #raise Exception("Program Stopped")
 
 def on_closing(window,video_thread): 
     video_thread.stop()
@@ -212,10 +235,20 @@ def main_window():
     button_start.place(relx=0.5, rely=0.5, anchor='center')  
     button_start.config(width=10, height=3)
 
-    average_label = tk.Label(window, text="Average Score: 0.00", font=('Helvetica', 14), bg='black', fg='white')
+    average_label = tk.Label(window, text="Average Score: 0.00/3.00", font=('Helvetica', 14), bg='black', fg='white')
     average_label.pack()
 
-    window.mainloop()
+    if not stopped:
+        window.mainloop()
+    else:
+        print("here")
+        window.quit()
+
 
 if __name__ == "__main__":
     main_window()
+
+
+
+
+
