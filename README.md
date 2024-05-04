@@ -12,21 +12,25 @@ for notes on deploying the project on a live system.
 
 Requirements for the software and other tools to build, test and push 
 - At least [Python 3.11.8](https://www.python.org/downloads/release/python-3118/)
-- For model training [Jupyter Notebook](https://jupyter.org/) or [Google Colab](https://colab.research.google.com/)
+- For model training [Anaconda](https://jupyter.org/) or [Google Colab](https://colab.research.google.com/)
 - High Performance GPUs like A100  
 
+## Attention Model
 ### Installing
 
-A step by step series of examples that tell you how to get a development
-environment running
+A step by step series of creating necessary environments to run the attention model.
+1. Open Anaconda Prompt
+2. Create a virtual environment
 
-Say what the step will be
+        conda create -n attention_env
 
-    Give the example
+3. Activate the environment
 
-And repeat
+        conda activate attention_env
+4. Install Jupyter Notebook
 
-    until finished
+        conda install jupyter
+5.
 
 End with an example of getting some data out of the system or using it
 for a little demo
