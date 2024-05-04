@@ -11,8 +11,9 @@ for notes on deploying the project on a live system.
 ### Prerequisites
 
 Requirements for the software and other tools to build, test and push 
-- [Example 1](https://www.example.com)
-- [Example 2](https://www.example.com)
+- At least [Python 3.11.8](https://www.python.org/downloads/release/python-3118/)
+- For model training [Jupyter Notebook](https://jupyter.org/) or [Google Colab](https://colab.research.google.com/)
+- High Performance GPUs like A100  
 
 ### Installing
 
