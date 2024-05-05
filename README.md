@@ -15,43 +15,12 @@ Requirements for the software and other tools to build, test and push
 - High Performance GPUs like A100, NVIDIA GE3600 
 
 ## Attention Model
-### Installing
 After clonning this repository follow these steps:
 A step by step series of creating necessary environments to run the attention model.
-1. Open Anaconda Prompt
-2. Create a virtual environment
-
-        conda create --name attention_env -c anaconda python=3.11.0
-
-3. Activate the environment
-
-        conda activate attention_env
-4. Install Jupyter Notebook
-
-        conda install jupyter
-
-5. Install these modules
-
-        conda install tensorflow-gpu
-        conda install pytorch torchvision torchaudio cudatoolkit -c pytorch
-        conda pandas matplotlib scikit-learn torchmetrics tqdm seaborn pytorch-lightning tensorboard
-        
-7. Open Jupyter Notebook
-
-        jupyter notebook
-   
-9. Go to the directory that the github files you cloned through jupyter notebook UI.
-
-10. Go to DatasetPreperation file and open Attention_Model.ipynb
-
-11. When you run the first line of the code
-
-            !nvidia-sim
-    Be sure that
-
-
-End with an example of getting some data out of the system or using it
-for a little demo
+1. Go to this link [Google Colab Attention Model](https://colab.research.google.com/drive/1CC1o9xPHbpJg8zmE7Jf_lSAsPUoacrJj?usp=sharing)
+2. Conect A100 GPU in order to run the code
+3. Run the code
+4. Copy the downloaded model to the clonned directory of this repository
 
 ## Running the tests
 
