@@ -14,7 +14,7 @@ Requirements for the software and other tools to build, test and push
 - For model training [Google Colab](https://colab.research.google.com/)
 - High Performance GPUs like A100, NVIDIA GE3600 
 
-## Attention Model
+## Reproduce Attention Model (If you want you can skip this part since the model is already provided in this repository)
 After clonning this repository follow these steps:
 A step by step series of creating necessary environments to run the attention model.
 1. Go to this link [Google Colab Attention Model](https://colab.research.google.com/drive/1CC1o9xPHbpJg8zmE7Jf_lSAsPUoacrJj?usp=sharing)
@@ -22,23 +22,9 @@ A step by step series of creating necessary environments to run the attention mo
 3. Run the code
 4. Copy the downloaded model to the clonned directory of this repository
 
-## Running the tests
+## Application
 
-Explain how to run the automated tests for this system
 
-### Sample Tests
-
-Explain what these tests test and why
-
-    Give an example
-
-### Style test
-
-Checks if the best practices and the right coding style has been used.
-
-    Give an example
-
-## Deployment
 
 Add additional notes to deploy this on a live system
 
