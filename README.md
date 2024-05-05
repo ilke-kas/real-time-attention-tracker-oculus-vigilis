@@ -12,71 +12,39 @@ for notes on deploying the project on a live system.
 
 Requirements for the software and other tools to build, test and push 
 - For model training [Google Colab](https://colab.research.google.com/)
-- High Performance GPUs like A100, NVIDIA GE3600 
+- For model training High Performance GPUs like A100, NVIDIA GE3600
+- For Application [Python 3.11.8](https://www.python.org/downloads/release/python-3118/)
+- [Anaconda](https://www.anaconda.com/)
 
-## Attention Model
+## Reproduce Attention Model 
+(If you want you can skip this part since the model is already provided in this repository)
 After clonning this repository follow these steps:
-A step by step series of creating necessary environments to run the attention model.
 1. Go to this link [Google Colab Attention Model](https://colab.research.google.com/drive/1CC1o9xPHbpJg8zmE7Jf_lSAsPUoacrJj?usp=sharing)
 2. Conect A100 GPU in order to run the code
 3. Run the code
 4. Copy the downloaded model to the clonned directory of this repository
 
-## Running the tests
+## Application
+1. Open Anaconda Prompt
+2. Create Environment
 
-Explain how to run the automated tests for this system
+       conda create --name attention_app
+3. Activate Environment
 
-### Sample Tests
+       conda activate attention_app
+4. Install Necessary modules through requirements.txt provided
 
-Explain what these tests test and why
+       conda run py -m -r requirements.txt
+5. Run the application
 
-    Give an example
+       conda run py UI.py
 
-### Style test
-
-Checks if the best practices and the right coding style has been used.
-
-    Give an example
-
-## Deployment
-
-Add additional notes to deploy this on a live system
-
-## Built With
-
-  - [Contributor Covenant](https://www.contributor-covenant.org/) - Used
-    for the Code of Conduct
-  - [Creative Commons](https://creativecommons.org/) - Used to choose
-    the license
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code
-of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [Semantic Versioning](http://semver.org/) for versioning. For the versions
-available, see the [tags on this
-repository](https://github.com/PurpleBooth/a-good-readme-template/tags).
+6. Click Start to start the session
+7. Click Stop stop the recording
+8. Close the program by hitting "x" on the right top of the window
 
 ## Authors
 
-  - **Billie Thompson** - *Provided README Template* -
-    [PurpleBooth](https://github.com/PurpleBooth)
+  - **Ilke Kas** - *PhD at ECSE* -
+    [Ilke Kas Github](https://github.com/ilke-kas)
 
-See also the list of
-[contributors](https://github.com/PurpleBooth/a-good-readme-template/contributors)
-who participated in this project.
-
-## License
-
-This project is licensed under the [CC0 1.0 Universal](LICENSE.md)
-Creative Commons License - see the [LICENSE.md](LICENSE.md) file for
-details
-
-## Acknowledgments
-
-  - Hat tip to anyone whose code is used
-  - Inspiration
-  - etc
