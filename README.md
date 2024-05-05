@@ -14,6 +14,7 @@ Requirements for the software and other tools to build, test and push
 - For model training [Google Colab](https://colab.research.google.com/)
 - For model training High Performance GPUs like A100, NVIDIA GE3600
 - For Application [Python 3.11.8](https://www.python.org/downloads/release/python-3118/)
+- [Anaconda](https://www.anaconda.com/)
 
 ## Reproduce Attention Model 
 (If you want you can skip this part since the model is already provided in this repository)
