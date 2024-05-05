@@ -11,7 +11,7 @@ for notes on deploying the project on a live system.
 ### Prerequisites
 
 Requirements for the software and other tools to build, test and push 
-- For model training [Anaconda](https://jupyter.org/) or [Google Colab](https://colab.research.google.com/)
+- For model training [Google Colab](https://colab.research.google.com/)
 - High Performance GPUs like A100, NVIDIA GE3600 
 
 ## Attention Model
