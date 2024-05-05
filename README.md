@@ -15,6 +15,7 @@ Requirements for the software and other tools to build, test and push
 - For model training High Performance GPUs like A100, NVIDIA GE3600
 - For Application [Python 3.11.8](https://www.python.org/downloads/release/python-3118/)
 - [Anaconda](https://www.anaconda.com/)
+- Windows OS . I f you are planning to run the application on macOS please do not change the video capturing line as said in notes in Application part of this README
 
 ## Reproduce Attention Model 
 (If you want you can skip this part since the model is already provided in this repository)
@@ -25,6 +26,12 @@ After clonning this repository follow these steps:
 4. Copy the downloaded model to the clonned directory of this repository
 
 ## Application
+- Note: If you are going to use macOS to run the program please go through these steps after cloning the repository:
+- open UI.py file
+- Change the cv2 video capturing line as
+
+         self.cap = cv2.VideoCapture(1)
+   
 1. Open Anaconda Prompt
 2. Create Environment
 
